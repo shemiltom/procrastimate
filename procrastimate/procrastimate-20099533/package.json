@@ -1,0 +1,25 @@
+{
+  "name": "procrastimate",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Procrastimate. Internal equipment booking and dispatch workspace, used in B9CY104.",
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "reset": "node scripts/reset-lab.mjs",
+    "doctor": "node scripts/doctor.mjs",
+    "test": "node --test --test-concurrency=1"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "ejs": "6.0.1",
+    "express": "5.2.1",
+    "express-session": "1.19.0"
+  },
+  "devDependencies": {
+    "supertest": "7.2.2"
+  }
+}

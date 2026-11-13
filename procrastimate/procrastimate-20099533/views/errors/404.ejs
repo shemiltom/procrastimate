@@ -1,0 +1,19 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell narrow">
+  <header class="page-head">
+    <div>
+      <span class="eyebrow">404</span>
+      <h1>Page not found</h1>
+      <p class="lead">That page does not exist or has moved.</p>
+    </div>
+  </header>
+  <p class="actions">
+    <% if (user) { %>
+      <a class="button" href="/dashboard">Back to the dashboard</a>
+    <% } else { %>
+      <a class="button" href="/login">Go to the sign-in page</a>
+    <% } %>
+  </p>
+</main>
+<%- include('../partials/foot') %>

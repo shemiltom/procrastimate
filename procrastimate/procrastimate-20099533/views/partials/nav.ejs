@@ -1,0 +1,63 @@
+<% if (user) { %>
+<%
+  const pageTitle = String(locals.title || '');
+  const section = pageTitle === 'Dashboard' ? 'dashboard'
+    : (pageTitle === 'Stock' || pageTitle === 'Cost estimate') ? 'stock'
+    : (pageTitle === 'Reservations' || pageTitle === 'New booking' || pageTitle.indexOf('Booking ') === 0) ? 'reservations'
+    : pageTitle === 'Guides' ? 'guides'
+    : pageTitle === 'Transfers' ? 'transfers'
+    : pageTitle === 'Settlements' ? 'settlements'
+    : pageTitle === 'Service information' ? 'service'
+    : '';
+  const initials = String(user.displayName || '').split(' ').map((part) => part.charAt(0)).join('').slice(0, 2);
+%>
+<header class="site-header">
+  <a class="brand" href="/dashboard">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 7h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H3z"/><path d="M16 10.5 21 8v8l-5-2.5"/></svg>
+    </span>
+    <span>Procrastimate<span class="brand-sub">AV equipment desk</span></span>
+  </a>
+  <nav class="site-nav" aria-label="Main">
+    <a aria-current="<%= section === 'dashboard' ? 'page' : 'false' %>" href="/dashboard">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      Dashboard
+    </a>
+    <a aria-current="<%= section === 'stock' ? 'page' : 'false' %>" href="/stock">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 8 12 3 3 8l9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
+      Stock
+    </a>
+    <a aria-current="<%= section === 'reservations' ? 'page' : 'false' %>" href="/reservations">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      Reservations
+    </a>
+    <a aria-current="<%= section === 'guides' ? 'page' : 'false' %>" href="/guides">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7h6"/></svg>
+      Guides
+    </a>
+    <a aria-current="<%= section === 'transfers' ? 'page' : 'false' %>" href="/transfers">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 8h15l-4-4"/><path d="M20 16H5l4 4"/></svg>
+      Transfers
+    </a>
+    <a aria-current="<%= section === 'settlements' ? 'page' : 'false' %>" href="/settlements">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>
+      Settlements
+    </a>
+    <a aria-current="<%= section === 'service' ? 'page' : 'false' %>" href="/service">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><path d="M7 7.5h.01M7 16.5h.01"/></svg>
+      Service information
+    </a>
+  </nav>
+  <div class="account">
+    <span class="avatar" aria-hidden="true"><%= initials %></span>
+    <span class="account-text">
+      <span class="account-name"><%= user.displayName %></span>
+      <span class="account-role"><%= user.role %></span>
+    </span>
+    <form method="post" action="/logout">
+      <input type="hidden" name="formKey" value="<%= locals.formKey || '' %>">
+      <button class="button button-quiet" type="submit">Sign out</button>
+    </form>
+  </div>
+</header>
+<% } %>

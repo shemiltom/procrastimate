@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Reservations</h1>
+      <p class="lead"><%= coordinator ? 'Every booking in the store.' : 'Bookings you have made.' %></p>
+    </div>
+    <div class="actions">
+      <a class="button button-quiet" href="/reservations/return?url=%2Fstock">Back to stock</a>
+      <a class="button" href="/reservations/new">New booking</a>
+    </div>
+  </header>
+
+  <section class="panel panel-flush">
+    <% if (bookings.length === 0) { %>
+      <p class="empty">No bookings to show.</p>
+    <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Booking</th><th>Item</th><th>Dates</th><th>Status</th>
+              <% if (coordinator) { %><th>Requested by</th><% } %>
+            </tr>
+          </thead>
+          <tbody>
+            <% bookings.forEach((booking) => { %>
+              <tr>
+                <td><a href="/reservations/<%= booking.id %>"><%= booking.id %></a></td>
+                <td><%= booking.title %> <span class="sku"><%= booking.sku %></span></td>
+                <td><%= formatDates(booking.start_date, booking.end_date) %></td>
+                <td><span class="status status-<%= booking.status %>"><%= booking.status %></span></td>
+                <% if (coordinator) { %><td><%= booking.display_name %></td><% } %>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </section>
+</main>
+<%- include('../partials/foot') %>

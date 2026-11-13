@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell narrow">
+  <header class="page-head">
+    <div>
+      <a class="crumb" href="/reservations">Reservations</a>
+      <h1>New booking</h1>
+      <p class="lead">Choose an item, the dates you need it and where it should go.</p>
+    </div>
+  </header>
+
+  <% if (message) { %>
+    <p class="notice" role="status"><%= message %></p>
+  <% } %>
+
+  <form class="panel" method="post" action="/reservations">
+    <input type="hidden" name="formKey" value="<%= locals.formKey || '' %>">
+    <div class="field">
+      <label for="sku">Item</label>
+      <select id="sku" name="sku" required>
+        <option value="">Choose an item</option>
+        <% items.forEach((item) => { %>
+          <option value="<%= item.sku %>" <%= values.sku === item.sku ? 'selected' : '' %>><%= item.sku %> - <%= item.title %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="startDate">Start date</label>
+        <input id="startDate" name="startDate" type="date" required value="<%= values.startDate %>">
+      </div>
+      <div class="field">
+        <label for="endDate">End date</label>
+        <input id="endDate" name="endDate" type="date" required value="<%= values.endDate %>">
+      </div>
+    </div>
+    <div class="field">
+      <label for="deliveryNote">Delivery note</label>
+      <textarea id="deliveryNote" name="deliveryNote" rows="3" maxlength="500" required><%= values.deliveryNote %></textarea>
+      <p class="field-help">Where and when the dispatch team should deliver, and who to contact.</p>
+    </div>
+    <div class="actions">
+      <button class="button" type="submit">Create booking</button>
+      <a class="button button-quiet" href="/reservations">Cancel</a>
+    </div>
+  </form>
+</main>
+<%- include('../partials/foot') %>

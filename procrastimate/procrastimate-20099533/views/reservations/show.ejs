@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <a class="crumb" href="/reservations">Reservations</a>
+      <div class="title-line">
+        <h1>Booking <%= booking.id %></h1>
+        <span class="status status-<%= booking.status %>"><%= booking.status %></span>
+      </div>
+      <p class="lead"><%= booking.title %> · <span class="sku"><%= booking.sku %></span></p>
+    </div>
+  </header>
+
+  <div class="grid-2">
+    <div>
+      <section class="panel">
+        <h2>Details</h2>
+        <dl class="details">
+          <dt>Requested by</dt><dd><%= booking.display_name %></dd>
+          <dt>Dates</dt><dd><%= formatDates(booking.start_date, booking.end_date) %></dd>
+          <dt>Delivery note</dt><dd><%= booking.delivery_note %></dd>
+        </dl>
+      </section>
+
+      <% if (booking.status === 'booked') { %>
+        <section class="panel">
+          <h2>Cancel this booking</h2>
+          <p class="hint">The booking stays on record and is marked as cancelled.</p>
+          <form method="post" action="/reservations/<%= booking.id %>/cancel">
+            <button class="button button-danger" type="submit">Cancel booking</button>
+          </form>
+        </section>
+      <% } %>
+    </div>
+
+    <section class="panel">
+      <h2>Packing and collection</h2>
+      <ul class="links">
+        <li><a href="/packing/preview?name=<%= encodeURIComponent(booking.title) %>"><span>Packing preview<small>What goes in the case</small></span></a></li>
+        <li><a href="/labels/preview?ref=<%= encodeURIComponent(booking.sku) %>"><span>Reference label<small>Text for the case label</small></span></a></li>
+        <li><a href="/manifests/download?f=<%= sheet %>"><span>Collection packing sheet<small>Plain-text download</small></span></a></li>
+        <li><a href="/api/reservations/<%= booking.id %>"><span>Booking record<small>JSON, for the dispatch system</small></span></a></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<%- include('../partials/foot') %>

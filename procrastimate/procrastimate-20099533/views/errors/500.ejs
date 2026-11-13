@@ -1,0 +1,19 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell narrow">
+  <header class="page-head">
+    <div>
+      <span class="eyebrow">Error</span>
+      <h1>Something went wrong</h1>
+      <p class="lead">The request could not be completed. Try again, and if it keeps happening, tell the store coordinator.</p>
+    </div>
+  </header>
+  <p class="actions">
+    <% if (user) { %>
+      <a class="button" href="/dashboard">Back to the dashboard</a>
+    <% } else { %>
+      <a class="button" href="/login">Go to the sign-in page</a>
+    <% } %>
+  </p>
+</main>
+<%- include('../partials/foot') %>

@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell narrow">
+  <header class="page-head">
+    <div>
+      <a class="crumb" href="/stock">Stock</a>
+      <h1>Cost estimate</h1>
+    </div>
+  </header>
+
+  <% if (message) { %>
+    <p class="notice" role="status"><%= message %></p>
+  <% } %>
+
+  <% if (item) { %>
+    <section class="panel">
+      <span class="eyebrow">Estimated hire</span>
+      <h2><%= item.title %></h2>
+      <p class="total"><data value="<%= cents %>"><%= formatCents(cents) %></data></p>
+      <dl class="details">
+        <dt>Item code</dt><dd class="sku"><%= item.sku %></dd>
+        <dt>Daily rate</dt><dd><%= formatCents(item.daily_cents) %></dd>
+        <dt>Days</dt><dd><%= days %></dd>
+      </dl>
+      <p class="actions">
+        <a class="button" href="/reservations/new">Book this item</a>
+      </p>
+    </section>
+  <% } %>
+
+  <form class="panel" method="post" action="/stock/estimate">
+    <h2><%= item ? 'Another estimate' : 'Estimate a hire' %></h2>
+    <div class="field-row">
+      <div class="field">
+        <label for="estimate-sku">Item code</label>
+        <input id="estimate-sku" name="sku" type="text" maxlength="200" required value="<%= values.sku %>">
+      </div>
+      <div class="field">
+        <label for="estimate-days">Days</label>
+        <input id="estimate-days" name="days" type="number" min="1" max="30" value="<%= values.days || 1 %>" required>
+      </div>
+    </div>
+    <button class="button" type="submit">Estimate cost</button>
+  </form>
+</main>
+<%- include('../partials/foot') %>

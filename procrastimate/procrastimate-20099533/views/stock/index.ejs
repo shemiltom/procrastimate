@@ -1,0 +1,71 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Stock</h1>
+      <p class="lead">Shared equipment across the store, with daily hire rates.</p>
+    </div>
+    <div class="actions">
+      <a class="button" href="/reservations/new">New booking</a>
+    </div>
+  </header>
+
+  <div class="grid-2">
+    <div>
+      <form class="panel toolbar" method="get" action="/stock">
+        <div class="field">
+          <label for="sku">Item code</label>
+          <input id="sku" name="sku" type="text" maxlength="200" value="<%= sku %>" placeholder="For example AV-104">
+        </div>
+        <button class="button" type="submit">Search</button>
+        <% if (sku) { %><a class="button button-quiet" href="/stock">Show all</a><% } %>
+      </form>
+
+      <% if (message) { %>
+        <p class="notice" role="status"><%= message %></p>
+      <% } %>
+
+      <% if (items.length === 0) { %>
+        <p class="notice" role="status">No items matched that code.</p>
+      <% } else { %>
+        <section class="panel panel-flush">
+          <div class="table-wrap">
+            <table class="stock-table">
+              <caption><%= items.length %> item<%= items.length === 1 ? '' : 's' %></caption>
+              <thead>
+                <tr><th>Code</th><th>Item</th><th>Available</th></tr>
+              </thead>
+              <tbody>
+                <% items.forEach((item) => { %>
+                  <tr>
+                    <td><%= item.sku %></td>
+                    <td><%= item.title %></td>
+                    <td><%= item.available %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      <% } %>
+    </div>
+
+    <section class="panel">
+      <h2>Cost estimate</h2>
+      <p class="hint">Daily rate times the number of days. An estimate does not hold the item; make a booking to reserve it.</p>
+      <form method="post" action="/stock/estimate">
+        <div class="field">
+          <label for="estimate-sku">Item code</label>
+          <input id="estimate-sku" name="sku" type="text" maxlength="200" required value="<%= sku %>">
+        </div>
+        <div class="field">
+          <label for="estimate-days">Days</label>
+          <input id="estimate-days" name="days" type="number" min="1" max="30" value="1" required>
+        </div>
+        <button class="button" type="submit">Estimate cost</button>
+      </form>
+    </section>
+  </div>
+</main>
+<%- include('../partials/foot') %>

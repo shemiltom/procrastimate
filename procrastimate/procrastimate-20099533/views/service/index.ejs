@@ -1,0 +1,37 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Service information</h1>
+      <p class="lead">Runtime and billing details for this installation.</p>
+    </div>
+  </header>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h2>Invoice layout</h2>
+      <p class="hint">How a printed invoice will look, filled in with sample values.</p>
+      <table class="table-plain">
+        <caption class="visually-hidden">Invoice layout</caption>
+        <tbody>
+          <tr><th scope="row">Reference</th><td><%= invoice.reference %></td></tr>
+          <tr><th scope="row">Issued</th><td><%= invoice.issuedDate %></td></tr>
+          <tr><th scope="row">Customer</th><td><%= invoice.customer %></td></tr>
+          <tr><th scope="row">Description</th><td><%= invoice.description %></td></tr>
+          <tr><th scope="row">Total</th><td><%= invoice.total %></td></tr>
+          <tr><th scope="row">Processor reference</th><td><code><%= invoice.processorReference %></code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Runtime</h2>
+      <dl class="details">
+        <dt>Application</dt><dd><%= appName %></dd>
+        <dt>Node version</dt><dd><%= version || 'Unavailable' %></dd>
+      </dl>
+    </section>
+  </div>
+</main>
+<%- include('../partials/foot') %>

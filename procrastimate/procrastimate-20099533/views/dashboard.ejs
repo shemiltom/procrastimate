@@ -1,0 +1,70 @@
+<%- include('partials/head') %>
+<%- include('partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="lead">Welcome back, <%= user.displayName %>.</p>
+    </div>
+    <div class="actions">
+      <a class="button button-quiet" href="/stock">Check stock</a>
+      <a class="button" href="/reservations/new">New booking</a>
+    </div>
+  </header>
+
+  <% if (next) { %>
+    <section class="panel feature">
+      <div>
+        <span class="eyebrow">First open booking</span>
+        <p class="feature-title">Booking <a href="/reservations/<%= next.id %>"><%= next.id %></a> · <%= next.title %></p>
+        <p><span class="sku"><%= next.sku %></span> · <%= formatDates(next.start_date, next.end_date) %></p>
+      </div>
+      <div class="actions">
+        <a class="button button-quiet" href="/manifests/download?f=<%= sheet %>">Collection packing sheet</a>
+        <a class="button" href="/reservations/<%= next.id %>">Open booking</a>
+      </div>
+    </section>
+  <% } else { %>
+    <p class="notice">You have no open bookings.</p>
+  <% } %>
+
+  <div class="grid-2">
+    <section class="panel panel-flush">
+      <div class="panel-head">
+        <h2>Your bookings</h2>
+        <p><a href="/reservations">All reservations</a></p>
+      </div>
+      <% if (bookings.length === 0) { %>
+        <p class="empty">No bookings yet. <a href="/reservations/new">Make your first booking</a>.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Booking</th><th>Item</th><th>Dates</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <% bookings.forEach((booking) => { %>
+                <tr>
+                  <td><a href="/reservations/<%= booking.id %>"><%= booking.id %></a></td>
+                  <td><a href="/stock?sku=<%= encodeURIComponent(booking.sku) %>"><%= booking.title %></a></td>
+                  <td><%= formatDates(booking.start_date, booking.end_date) %></td>
+                  <td><span class="status status-<%= booking.status %>"><%= booking.status %></span></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+
+    <section class="panel">
+      <h2>Before you collect</h2>
+      <ul class="links">
+        <li><a href="/guides"><span>Collection and return guides<small>Read before you pick anything up</small></span></a></li>
+        <li><a href="/stock"><span>Stock and hire rates<small>Availability and cost estimates</small></span></a></li>
+        <li><a href="/settlements"><span>Settlement exports<small>Download with a reference and access code</small></span></a></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<%- include('partials/foot') %>

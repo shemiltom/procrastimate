@@ -1,0 +1,41 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Guides</h1>
+      <p class="lead">Collection and return guides, shared across the store. Read them before you collect equipment.</p>
+    </div>
+  </header>
+
+  <section class="panel panel-flush">
+    <div class="table-wrap">
+      <table>
+        <caption>Collection and return guides</caption>
+        <thead>
+          <tr><th>Guide</th><th>Size</th><th>File checksum (for copy checks)</th><th>Download</th></tr>
+        </thead>
+        <tbody>
+          <% guides.forEach((guide) => { %>
+            <tr>
+              <td><%= guide.label %></td>
+              <td><%= guide.size %> bytes</td>
+              <td><code><%= guide.checksum %></code></td>
+              <td><a href="/guides/download?f=<%= encodeURIComponent(guide.name) %>"><%= guide.name %></a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <p class="hint">If two copies of a guide have different checksums, one of them is out of date.</p>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Collection note</h2>
+      <p>Hand this to the collection desk with your guide.</p>
+    </div>
+    <a class="button button-quiet" href="/guides/collection-note?name=<%= encodeURIComponent(user.displayName) %>">Open your collection note</a>
+  </section>
+</main>
+<%- include('../partials/foot') %>

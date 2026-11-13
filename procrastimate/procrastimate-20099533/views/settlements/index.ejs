@@ -1,0 +1,80 @@
+<%- include('../partials/head') %>
+<%- include('../partials/nav') %>
+<main class="shell">
+  <header class="page-head">
+    <div>
+      <h1>Settlements</h1>
+      <p class="lead">Supplier settlement exports. To download one you need its reference and the access code from the coordinator who published it.</p>
+    </div>
+  </header>
+
+  <% if (message) { %>
+    <p class="notice" role="status"><%= message %></p>
+  <% } %>
+
+  <div class="grid-2">
+    <section class="panel panel-flush">
+      <% if (rows.length === 0) { %>
+        <p class="empty">No exports have been published yet.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table>
+            <caption>Published exports</caption>
+            <thead>
+              <tr><th>Reference</th><th>Title</th><% if (coordinator) { %><th>Access code</th><% } %></tr>
+            </thead>
+            <tbody>
+              <% rows.forEach((row) => { %>
+                <tr>
+                  <td><%= row.id %></td>
+                  <td><%= row.title %></td>
+                  <% if (coordinator) { %>
+                    <td class="export-code"><code data-export="<%= row.id %>"><%= row.access_code %></code></td>
+                  <% } %>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+
+    <section class="panel">
+      <h2>Download an export</h2>
+      <form method="post" action="/settlements/retrieve">
+        <input type="hidden" name="formKey" value="<%= locals.formKey || '' %>">
+        <div class="field">
+          <label for="export-id">Export reference</label>
+          <input id="export-id" name="id" type="number" min="1" step="1" required>
+        </div>
+        <div class="field">
+          <label for="export-code">Access code</label>
+          <input id="export-code" name="code" type="text" maxlength="64" required autocomplete="off">
+        </div>
+        <button class="button" type="submit">Download export</button>
+      </form>
+    </section>
+  </div>
+
+  <% if (coordinator) { %>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Publish an export</h2>
+        <p>Publishing creates a reference and an access code to share.</p>
+      </div>
+      <form method="post" action="/settlements">
+        <input type="hidden" name="formKey" value="<%= locals.formKey || '' %>">
+        <div class="field">
+          <label for="export-title">Title</label>
+          <input id="export-title" name="title" type="text" maxlength="200" required>
+        </div>
+        <div class="field">
+          <label for="export-payload">Export contents (CSV)</label>
+          <textarea id="export-payload" name="payload" rows="6" maxlength="8192" required></textarea>
+        </div>
+        <button class="button" type="submit">Publish export</button>
+      </form>
+    </section>
+  <% } %>
+</main>
+<%- include('../partials/foot') %>
